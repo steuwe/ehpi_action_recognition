@@ -12,7 +12,7 @@ from nobos_commons.data_structures.dimension import ImageSize
 from nobos_commons.data_structures.humans_metadata.action import Action
 from nobos_commons.data_structures.image_content import ImageContent
 from nobos_commons.data_structures.image_content_buffer import ImageContentBuffer
-from nobos_commons.data_structures.skeletons.skeleton_stickman import SkeletonCoco
+from nobos_commons.data_structures.skeletons.skeleton_coco import SkeletonCoco
 from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_joints.feature_vec_joint_config import \
     get_joints_default
 from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_joints.feature_vec_producer_ehpi import \
