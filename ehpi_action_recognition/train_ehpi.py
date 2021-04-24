@@ -16,18 +16,18 @@ from torchvision.transforms import transforms
 
 from ehpi_action_recognition.trainer_ehpi import TrainerEhpi
 
-foot_indexes: List[int] = [11, 14]
-knee_indexes: List[int] = [10, 13]
+foot_indexes: List[int] = [17, 18, 19, 20]
+knee_indexes: List[int] = [13, 14, 15, 16]
 
 
 def get_train_set(dataset_path: str, image_size: ImageSize):
-    num_joints = 15
-    left_indexes: List[int] = [3, 4, 5, 9, 10, 11]
-    right_indexes: List[int] = [6, 7, 8, 12, 13, 14]
+    num_joints = 20
+    left_indexes: List[int] = [0, 5, 8, 10, 12, 14, 16, 18]
+    right_indexes: List[int] = [1, 6, 9, 11, 13, 15, 17, 19]
 
     datasets: List[EhpiDataset] = [
         # Set 1
-        EhpiDataset(os.path.join(dataset_path, "ofp_record_2019_03_11_HSRT_30FPS"),
+        EhpiDataset(os.path.join(dataset_path, "test"),
                     transform=transforms.Compose([
                         RemoveJointsOutsideImgEhpi(image_size),
                         ScaleEhpi(image_size),
@@ -36,7 +36,7 @@ def get_train_set(dataset_path: str, image_size: ImageSize):
                         NormalizeEhpi(image_size)
                     ]), num_joints=num_joints, dataset_part=DatasetPart.TEST),
         # Set 2
-        EhpiDataset(os.path.join(dataset_path, "2019_03_13_Freilichtmuseum_30FPS"),
+        EhpiDataset(os.path.join(dataset_path, "train"),
                     transform=transforms.Compose([
                         RemoveJointsOutsideImgEhpi(image_size),
                         ScaleEhpi(image_size),
