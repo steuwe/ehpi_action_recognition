@@ -66,7 +66,7 @@ if __name__ == '__main__':
     heatmap_size = ImageSize(width=64, height=114)
     fps = 8
     buffer_size = 20
-    action_names = [Action.EAT.name, Action.MOVE.name, Action.LOOK.name]
+    action_names = [Action.WALK.name, Action.IDLE.name, Action.RUN.name]
     use_action_recognition = True
     use_quick_n_dirty = False
 
