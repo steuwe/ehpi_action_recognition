@@ -12,9 +12,9 @@ from nobos_commons.data_structures.dimension import ImageSize
 from nobos_commons.data_structures.humans_metadata.action import Action
 from nobos_commons.data_structures.image_content import ImageContent
 from nobos_commons.data_structures.image_content_buffer import ImageContentBuffer
-from nobos_commons.data_structures.skeletons.skeleton_stickman import SkeletonStickman
+from nobos_commons.data_structures.skeletons.skeleton_stickman import SkeletonCoco
 from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_joints.feature_vec_joint_config import \
-    get_joints_jhmdb
+    get_joints_default
 from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_joints.feature_vec_producer_ehpi import \
     FeatureVecProducerEhpi
 from nobos_commons.input_providers.camera.webcam_provider import WebcamProvider
@@ -60,24 +60,15 @@ def argmax(items):
 
 
 if __name__ == '__main__':
-    setup_application()
     # Settings
-    skeleton_type = SkeletonStickman
-    image_size = ImageSize(width=640, height=360)
+    skeleton_type = SkeletonCoco
+    image_size = ImageSize(width=1280, height=720)
     heatmap_size = ImageSize(width=64, height=114)
-    camera_number = 0
-    fps = 30
+    fps = 8
     buffer_size = 20
-    action_names = [Action.IDLE.name, Action.WALK.name, Action.WAVE.name]
+    action_names = [Action.EAT.name, Action.MOVE.name, Action.LOOK.name]
     use_action_recognition = True
     use_quick_n_dirty = False
-
-    # Input Provider
-    input_provider = WebcamProvider(camera_number=0, image_size=image_size, fps=fps)
-    # input_provider = ImgDirProvider(
-    #     "/media/disks/beta/records/real_cam/2019_03_13_Freilichtmuseum_Dashcam_01/full",
-    #     image_size=image_size, fps=fps)
-    fps_tracker = FPSTracker(average_over_seconds=1)
 
     # Pose Network
     pose_model = pose_resnet.get_pose_net(pose_resnet_config)
@@ -96,14 +87,14 @@ if __name__ == '__main__':
     action_model.cuda()
     action_model.eval()
     feature_vec_producer = FeatureVecProducerEhpi(image_size,
-                                                  get_joints_func=lambda skeleton: get_joints_jhmdb(skeleton))
+                                                  get_joints_func=lambda skeleton: get_joints_default(skeleton))
     action_net = ActionRecNetEhpi(action_model, feature_vec_producer, image_size)
 
     # Content Buffer
     image_content_buffer: ImageContentBuffer = ImageContentBuffer(buffer_size=buffer_size)
 
     counts: Dict[str, int] = {}
-    for frame_nr, frame in enumerate(input_provider.get_data()):
+    for frame_nr, frame in enumerate(wcd.get_data()):
         last_humans = image_content_buffer.get_last_humans()
         humans = []
         object_bounding_boxes = []
