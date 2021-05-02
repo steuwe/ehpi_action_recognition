@@ -146,14 +146,8 @@ if __name__ == '__main__':
 
         img = cv2.resize(img, (1280, 720))
 
-        cv2.imshow('webcam', img)
+        cv2.imwrite('/content/output/' + str(frame_nr) + '.png', img)
         # cv2.imwrite(os.path.join(get_create_path("/media/disks/beta/records/with_visualizations/2019_03_13_Freilichtmuseum_Demo"), "{}.png".format(str(frame_nr).zfill(5))), img)
         # cv2.imwrite(os.path.join(get_create_path(
         #     "/media/disks/beta/records/with_visualizations/2019_03_13_Freilichtmuseum_Dashcam_Test_FASTMODE"),
         #                          "{}.jpg".format(str(frame_nr).zfill(5))), img)
-
-        key = cv2.waitKey(1)
-        if key & 0xFF == ord('q'):
-            break
-
-        fps_tracker.print_fps()
