@@ -31,6 +31,8 @@ from ehpi_action_recognition.configurator import setup_application
 from ehpi_action_recognition.networks.action_recognition_nets.action_rec_net_ehpi import ActionRecNetEhpi
 from ehpi_action_recognition.networks.pose_estimation_2d_nets.pose2d_net_resnet import Pose2DNetResnet
 
+from WCD_loader import read_csv_annots
+
 action_save: Dict[str, List[List[float]]] = {}
 
 
@@ -60,23 +62,20 @@ def argmax(items):
 
 
 if __name__ == '__main__':
-    setup_application()
     # Settings
     skeleton_type = SkeletonStickman
-    image_size = ImageSize(width=640, height=360)
+    image_size = ImageSize(width=1280, height=720)
     heatmap_size = ImageSize(width=64, height=114)
-    camera_number = 0
-    fps = 30
+    fps = 8
     buffer_size = 20
     action_names = [Action.IDLE.name, Action.WALK.name, Action.WAVE.name]
     use_action_recognition = True
     use_quick_n_dirty = False
 
     # Input Provider
-    input_provider = WebcamProvider(camera_number=0, image_size=image_size, fps=fps)
-    # input_provider = ImgDirProvider(
-    #     "/media/disks/beta/records/real_cam/2019_03_13_Freilichtmuseum_Dashcam_01/full",
-    #     image_size=image_size, fps=fps)
+    input_provider = ImgDirProvider(
+        "/content/drive/My Drive/JPG_Frames/",
+        image_size=image_size, fps=fps)
     fps_tracker = FPSTracker(average_over_seconds=1)
 
     # Pose Network
