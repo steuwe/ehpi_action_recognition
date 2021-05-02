@@ -17,7 +17,7 @@ from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_join
     get_joints_jhmdb
 from nobos_commons.feature_preparations.feature_vec_producers.from_skeleton_joints.feature_vec_producer_ehpi import \
     FeatureVecProducerEhpi
-from nobos_commons.input_providers.camera.webcam_provider import ImgDirProvider
+from nobos_commons.input_providers.camera.img_dir_provider import ImgDirProvider
 from nobos_commons.tools.fps_tracker import FPSTracker
 from nobos_commons.tools.log_handler import logger
 from nobos_commons.tools.pose_tracker import PoseTracker
