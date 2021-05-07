@@ -56,7 +56,7 @@ class MyDataset(Dataset):
     
     def get_annots(img_file):
         annots = pd.read_csv('/content/drive/My Drive/wcd_action_videos/annots_per_frame.csv')
-        return (annots.loc[annots['file_name'] == img_file]['action'], annots.loc[annots['file_name] == img_file]['keypoints'])
+        return (annots.loc[annots['file_name'] == img_file]['action'], annots.loc[annots['file_name'] == img_file]['keypoints'])
 
 
 root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
