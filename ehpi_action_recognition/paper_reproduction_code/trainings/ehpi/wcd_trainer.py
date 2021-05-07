@@ -29,7 +29,7 @@ class TrainerEhpi(object):
             losses = []
             for i, data in enumerate(train_loader):
                 x = Variable(data[0]).to(device)
-                y = Variable(data[1], dtype=torch.long).to(device)
+                y = Variable(torch.tensor(data[1], dtype=torch.long)).to(device)
                 optimizer.zero_grad()
                 outputs = model(x)
                 loss = loss_func(outputs, y)
