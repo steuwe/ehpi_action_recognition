@@ -56,7 +56,7 @@ class MyDataset(Dataset):
             images.append(image)
         x = torch.stack(images)
         #y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
-        y = torch.tensor(actions)
+        y = torch.tensor(actions[0])
         z = torch.tensor(keypoints)
         return x, y, z
     
