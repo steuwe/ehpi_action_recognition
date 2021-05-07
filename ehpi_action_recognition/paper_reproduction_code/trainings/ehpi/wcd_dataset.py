@@ -1,5 +1,6 @@
 import os
 import glob
+import pdb
 import pandas as pd
 
 import torch
@@ -40,23 +41,28 @@ class MyDataset(Dataset):
         print('Getting images from {} to {}'.format(start, end))
         indices = list(range(start, end))
         images = []
+        annots = pd.read_csv('/content/drive/My Drive/wcd_action_videos/annots_per_frame.csv')
+        actions = []
+        keypoints = []
         for i in indices:
             image_path = self.image_paths[i][0]
             image = Image.open(image_path)
+            actions.append(annots.loc[annots['file_name'] == image_path.split('/')[-1]]['action'].item())
+            kpts = annots.loc[annots['file_name'] == image_path.split('/')[-1]]['keypoints'].item()
+            kpts = kpts.replace('[', '').replace(']', '').split(' ')
+            keypoints.append([float(x) for x in kpts])
             if self.transform:
                 image = self.transform(image)
             images.append(image)
         x = torch.stack(images)
-        y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
-        
-        return x, y
+        #y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
+        print(keypoints)
+        y = torch.tensor(actions)
+        z = torch.tensor(keypoints)
+        return x, y, z
     
     def __len__(self):
         return self.length
-    
-    def get_annots(img_file):
-        annots = pd.read_csv('/content/drive/My Drive/wcd_action_videos/annots_per_frame.csv')
-        return (annots.loc[annots['file_name'] == img_file]['action'], annots.loc[annots['file_name'] == img_file]['keypoints'])
 
 
 root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
