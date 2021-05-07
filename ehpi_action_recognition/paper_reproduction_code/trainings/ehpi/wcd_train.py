@@ -49,6 +49,12 @@ def train(model_path: str, num_epochs: int, seed: int, split: int):
     trainer = TrainerEhpi()
     trainer.train(train_loader, train_config, model=EHPISmallNet(21))
 
+def set_seed(seed):
+    random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(0)
+
 if __name__ == '__main__':
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
