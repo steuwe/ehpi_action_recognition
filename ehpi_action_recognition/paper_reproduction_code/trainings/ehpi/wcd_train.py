@@ -82,7 +82,7 @@ if __name__ == '__main__':
     torch.backends.cudnn.enabled = True
     image_size = ImageSize(1280, 720)
     seeds = [0, 104, 123, 142, 200]
-    batch_size = 64
+    batch_size = 1
     weight_decay = 5e-4
     lr = 0.05
 
