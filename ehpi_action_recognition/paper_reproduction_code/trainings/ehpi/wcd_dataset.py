@@ -1,5 +1,6 @@
 import os
 import glob
+import pandas as pd
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -52,6 +53,10 @@ class MyDataset(Dataset):
     
     def __len__(self):
         return self.length
+    
+    def get_annots(img_file):
+        annots = pd.read_csv('/content/drive/My Drive/wcd_action_videos/annots_per_frame.csv')
+        return (annots.loc[annots['file_name'] == img_file]['action'], annots.loc[annots['file_name] == img_file]['keypoints'])
 
 
 root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
