@@ -56,6 +56,24 @@ def set_seed(seed):
     np.random.seed(0)
 
 if __name__ == '__main__':
+    root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
+    class_paths = [d.path for d in os.scandir(root_dir) if d.is_dir]
+
+    class_image_paths = []
+    end_idx = []
+    for c, class_path in enumerate(class_paths):
+        for d in os.scandir(class_path):
+            if d.is_dir:
+                paths = sorted(glob.glob(os.path.join(d.path, '*.jpg')))
+                # Add class idx to paths
+                paths = [(p, c) for p in paths]
+                class_image_paths.extend(paths)
+                end_idx.extend([len(paths)])
+
+    end_idx = [0, *end_idx]
+    end_idx = torch.cumsum(torch.tensor(end_idx), 0)
+    seq_length = 10
+    
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.enabled = True
