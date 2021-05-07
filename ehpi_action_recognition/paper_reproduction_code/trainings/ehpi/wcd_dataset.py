@@ -62,7 +62,7 @@ end_idx = []
 for c, class_path in enumerate(class_paths):
     for d in os.scandir(class_path):
         if d.is_dir:
-            paths = sorted(glob.glob(os.path.join(d.path, '*.png')))
+            paths = sorted(glob.glob(os.path.join(d.path, '*.jpg')))
             # Add class idx to paths
             paths = [(p, c) for p in paths]
             class_image_paths.extend(paths)
