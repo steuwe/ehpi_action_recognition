@@ -28,8 +28,8 @@ class TrainerEhpi(object):
             train_config.learning_rate_scheduler(optimizer, epoch)
             losses = []
             for i, data in enumerate(train_loader):
-                print(data)
-
+                x = Variable(data[0]).to(device)
+                y = Variable(data[1], dtype=torch.long).to(device)
                 optimizer.zero_grad()
                 outputs = model(x)
                 loss = loss_func(outputs, y)
