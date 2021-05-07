@@ -54,7 +54,7 @@ class MyDataset(Dataset):
         return self.length
 
 
-root_dir = './video_data_test/'
+root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
 class_paths = [d.path for d in os.scandir(root_dir) if d.is_dir]
 
 class_image_paths = []
@@ -74,7 +74,7 @@ seq_length = 10
 
 sampler = MySampler(end_idx, seq_length)
 transform = transforms.Compose([
-    transforms.Resize((32, 32)),
+    transforms.Resize((1280, 720)),
     transforms.ToTensor()
 ])
 
