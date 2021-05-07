@@ -50,13 +50,12 @@ class MyDataset(Dataset):
             actions.append(annots.loc[annots['file_name'] == image_path.split('/')[-1]]['action'].item())
             kpts = annots.loc[annots['file_name'] == image_path.split('/')[-1]]['keypoints'].item()
             kpts = kpts.replace('[', '').replace(']', '').split(' ')
-            keypoints.append([float(x) for x in kpts])
+            keypoints.append([float(x) for x in kpts if x != ''])
             if self.transform:
                 image = self.transform(image)
             images.append(image)
         x = torch.stack(images)
         #y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
-        print(keypoints)
         y = torch.tensor(actions)
         z = torch.tensor(keypoints)
         return x, y, z
