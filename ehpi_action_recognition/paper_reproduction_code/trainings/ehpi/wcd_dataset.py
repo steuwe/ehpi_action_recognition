@@ -42,29 +42,22 @@ class MyDataset(Dataset):
         end = index + self.seq_length
         print('Getting images from {} to {}'.format(start, end))
         indices = list(range(start, end))
-        images = []
         annots = pd.read_csv('/content/drive/My Drive/wcd_action_videos/annots_per_frame.csv')
         actions = []
         keypoints = []
         for i in indices:
             image_path = self.image_paths[i][0]
-            image = Image.open(image_path)
             actions.append(annots.loc[annots['file_name'] == image_path.split('/')[-1]]['action'].item())
             kpts = annots.loc[annots['file_name'] == image_path.split('/')[-1]]['keypoints'].item()
             kpts = kpts.replace('[', '').replace(']', '').split(' ')
             keypoints.append([float(x) for x in kpts if x != ''])
-            if self.transform:
-                image = self.transform(image)
-            images.append(image)
-        x = torch.stack(images)
-        #y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
         y = torch.tensor(actions[0])
-        z = np.array(keypoints)
-        z = np.reshape(z, (1, 32, 20, 3))
-        z[:,:,:,2] = 0
-        z = np.transpose(z, (0, 3, 1, 2))
-        z = torch.tensor(z)
-        return x, y, z
+        x = np.array(keypoints)
+        x = np.reshape(x, (32, 20, 3))
+        x[:,:,:,2] = 0
+        x = np.transpose(x, (2, 0, 1))
+        x = torch.tensor(x)
+        return x, y
     
     def __len__(self):
         return self.length
@@ -87,21 +80,3 @@ for c, class_path in enumerate(class_paths):
 end_idx = [0, *end_idx]
 end_idx = torch.cumsum(torch.tensor(end_idx), 0)
 seq_length = 32
-
-sampler = MySampler(end_idx, seq_length)
-transform = transforms.Compose([
-    transforms.Resize((1280, 720)),
-    transforms.ToTensor()
-])
-
-dataset = MyDataset(
-    image_paths=class_image_paths,
-    seq_length=seq_length,
-    transform=transform,
-    length=len(sampler))
-
-loader = DataLoader(
-    dataset,
-    batch_size=1,
-    sampler=sampler
-)
