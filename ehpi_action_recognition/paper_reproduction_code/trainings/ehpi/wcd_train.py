@@ -37,7 +37,7 @@ def train(model_path: str, num_epochs: int, seed: int, split: int):
 
     train_loader = DataLoader(
         dataset,
-        batch_size=64,
+        batch_size=1,
         sampler=sampler
     )
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     end_idx = [0, *end_idx]
     end_idx = torch.cumsum(torch.tensor(end_idx), 0)
-    seq_length = 10
+    seq_length = 32
     
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
