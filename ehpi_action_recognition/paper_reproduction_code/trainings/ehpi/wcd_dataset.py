@@ -58,7 +58,11 @@ class MyDataset(Dataset):
         x = torch.stack(images)
         #y = torch.tensor([self.image_paths[start][1]], dtype=torch.long)
         y = torch.tensor(actions[0])
-        z = torch.tensor(keypoints)
+        z = np.array(keypoints)
+        z = np.reshape(z, (1, 32, 20, 3))
+        z[:,:,:,2] = 0
+        z = np.transpose(z, (0, 3, 1, 2))
+        z = torch.tensor(z)
         return x, y, z
     
     def __len__(self):
