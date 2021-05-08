@@ -16,7 +16,8 @@ class MySampler(torch.utils.data.Sampler):
         for i in range(len(end_idx)-1):
             start = end_idx[i]
             end = end_idx[i+1] - seq_length
-            indices.append(torch.arange(start, end))
+            if end - start >= 32:
+                indices.append(torch.arange(start, end))
         indices = torch.cat(indices)
         self.indices = indices
         
