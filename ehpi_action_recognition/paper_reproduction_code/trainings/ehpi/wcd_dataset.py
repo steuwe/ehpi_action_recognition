@@ -86,7 +86,7 @@ for c, class_path in enumerate(class_paths):
 
 end_idx = [0, *end_idx]
 end_idx = torch.cumsum(torch.tensor(end_idx), 0)
-seq_length = 10
+seq_length = 32
 
 sampler = MySampler(end_idx, seq_length)
 transform = transforms.Compose([
