@@ -53,8 +53,8 @@ class TrainerEhpi(object):
         model.eval()
         corrects = []
         for i, data in enumerate(test_loader):
-            x = Variable(torch.tensor(data["x"], dtype=torch.float)).to(device)
-            y = data["y"].numpy()[0]
+            x = Variable(data[0]).to(device)
+            y = Variable(torch.tensor(data[1], dtype=torch.long)).to(device)
             outputs = model(x).data.cpu().numpy()[0]
             predictions = np.argmax(outputs)
             correct = predictions == y
