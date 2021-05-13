@@ -37,7 +37,7 @@ def train(model_path: str, num_epochs: int, seed: int, split: int):
 
     train_loader = DataLoader(
         dataset,
-        batch_size=1,
+        batch_size=64,
         sampler=sampler
     )
 
