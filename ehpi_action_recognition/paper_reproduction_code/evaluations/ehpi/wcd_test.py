@@ -4,6 +4,7 @@ from nobos_commons.data_structures.constants.dataset_part import DatasetPart
 from nobos_commons.data_structures.dimension import ImageSize
 from nobos_torch_lib.datasets.action_recognition_datasets.ehpi_dataset import EhpiDataset, NormalizeEhpi, \
     RemoveJointsOutsideImgEhpi
+from ehpi_action_recognition.ehpi_action_recognition.paper_reproduction_code.trainings.ehpi.wcd_dataset import MyDataset
 from nobos_torch_lib.models.action_recognition_models.ehpi_small_net import EHPISmallNet
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
@@ -11,7 +12,7 @@ from torchvision.transforms import transforms
 from ehpi_action_recognition.config import ehpi_dataset_path, models_dir
 from ehpi_action_recognition.tester_ehpi import TesterEhpi
 
-def test_gt(test_loader):
+def test(test_loader):
     seeds = [0, 104, 123, 142, 200]
     for seed in seeds:
         print("Test WCD GT on seed: {}".format(seed))
@@ -20,21 +21,6 @@ def test_gt(test_loader):
         # Test set
         tester = TesterEhpi()
         tester.test(test_loader, weights_path, model=EHPISmallNet(21))
-
-
-def test_jhmdb():
-    seeds = [0, 104, 123, 142, 200]
-    for split in range(1, 4):
-        for seed in seeds:
-            print("Test JHMDB Split {} on seed: {}".format(split, seed))
-            weights_path = os.path.join(models_dir, "jhmdb", "ehpi_jhmdb_{}_split_{}_cp0200.pth".format(seed, split))
-
-            # Test set
-            test_set = get_test_set(os.path.join(ehpi_dataset_path, "jhmdb", "JHMDB_ITSC-1-POSE/"), ImageSize(320, 240))
-            test_loader = DataLoader(test_set, batch_size=1, shuffle=False)
-
-            tester = TesterEhpi()
-            tester.test(test_loader, weights_path, model=EHPISmallNet(21))
 
 
 if __name__ == '__main__':
@@ -71,5 +57,4 @@ if __name__ == '__main__':
         sampler=sampler
     )
     
-    test_gt(test_loader)
-    test_jhmdb()
+    test(test_loader)
