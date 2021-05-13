@@ -109,7 +109,7 @@ if __name__ == '__main__':
         set_seed(seed)
 
         train(model_path=os.path.join(models_dir, "train_jhmdb_gt"),
-              num_epochs=140,
+              num_epochs=50,
               seed=seed,
               split=1,
               end_idx, 
@@ -122,7 +122,7 @@ if __name__ == '__main__':
             set_seed(seed)
 
             train(model_path=os.path.join(models_dir, "train_jhmdb"),
-                  num_epochs=200,
+                  num_epochs=50,
                   seed=seed,
                   split=split,
                   end_idx,
