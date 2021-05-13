@@ -55,6 +55,8 @@ class MyDataset(Dataset):
         x = np.array(keypoints)
         x = np.reshape(x, (32, 20, 3))
         x[:,:,2] = 0
+        x[:,:,0] = x[:,:,0]/1280
+        x[:,:,1] = x[:,:,1]/720
         x = np.transpose(x, (2, 0, 1))
         x = torch.tensor(x)
         return x, y
