@@ -21,7 +21,7 @@ from torchvision.transforms import transforms
 from ehpi_action_recognition.config import ehpi_dataset_path, models_dir
 from ehpi_action_recognition.trainer_ehpi import TrainerEhpi
 
-def train(model_path: str, num_epochs: int, seed: int, split: int):
+def train(model_path: str, num_epochs: int, seed: int, split: int, end_idx, seq_length=32):
     # Train set
     sampler = MySampler(end_idx, seq_length)
     transform = transforms.Compose([
@@ -59,7 +59,8 @@ def set_seed(seed):
     np.random.seed(0)
 
 if __name__ == '__main__':
-    root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/'
+    root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/train/'
+    test_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/test/'
     class_paths = [d.path for d in os.scandir(root_dir) if d.is_dir]
 
     class_image_paths = []
@@ -76,6 +77,22 @@ if __name__ == '__main__':
     end_idx = [0, *end_idx]
     end_idx = torch.cumsum(torch.tensor(end_idx), 0)
     seq_length = 32
+    
+    test_class_paths = [d.path for d in os.scandir(test_root_dir) if d.is_dir]
+
+    test_class_image_paths = []
+    test_end_idx = []
+    for c, class_path in enumerate(test_class_paths):
+        for d in os.scandir(test_class_path):
+            if d.is_dir:
+                test_paths = sorted(glob.glob(os.path.join(d.path, '*.jpg')))
+                # Add class idx to paths
+                test_paths = [(p, c) for p in test_paths]
+                test_class_image_paths.extend(test_paths)
+                test_end_idx.extend([len(test_paths)])
+
+    test_end_idx = [0, *test_end_idx]
+    test_end_idx = torch.cumsum(torch.tensor(test_end_idx), 0)
     
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
@@ -94,7 +111,9 @@ if __name__ == '__main__':
         train(model_path=os.path.join(models_dir, "train_jhmdb_gt"),
               num_epochs=140,
               seed=seed,
-              split=1)
+              split=1,
+              end_idx, 
+              seq_length)
 
     print("Train WCD")
     for split in range(1, 4):
@@ -105,4 +124,6 @@ if __name__ == '__main__':
             train(model_path=os.path.join(models_dir, "train_jhmdb"),
                   num_epochs=200,
                   seed=seed,
-                  split=split)
+                  split=split,
+                  end_idx,
+                  seq_length)
