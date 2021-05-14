@@ -20,6 +20,7 @@ from torchvision.transforms import transforms
 
 from ehpi_action_recognition.config import ehpi_dataset_path, models_dir
 from ehpi_action_recognition.trainer_ehpi import TrainerEhpi
+from ehpi_action_recognition.ehpi_action_recognition.paper_reproduction_code.trainings.ehpi.wcd_trainer import Trainer_Ehpi
 
 def train(model_path: str, num_epochs: int, seed: int, split: int, end_idx, seq_length=32):
     # Train set
