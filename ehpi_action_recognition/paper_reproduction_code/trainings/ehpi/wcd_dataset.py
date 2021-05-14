@@ -65,8 +65,8 @@ class MyDataset(Dataset):
         return self.length
 
 
-root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/train/'
-test_root_dir = '/content/drive/My Drive/wcd_action_videos/action_frames_by_class/test/'
+root_dir = '/content/drive/My Drive/wcd_action_videos/annotated_action_frames_by_class/train/'
+test_root_dir = '/content/drive/My Drive/wcd_action_videos/annotated_action_frames_by_class/test/'
 class_paths = [d.path for d in os.scandir(root_dir) if d.is_dir]
 
 class_image_paths = []
