@@ -28,7 +28,7 @@ class TrainerEhpi(object):
             train_config.learning_rate_scheduler(optimizer, epoch)
             losses = []
             for i, data in enumerate(train_loader):
-                x = Variable(torch.DoubleTensor(data[0]).to(device)
+                x = Variable(torch.DoubleTensor(data[0])).to(device)
                 y = Variable(torch.tensor(data[1], dtype=torch.long)).to(device)
                 optimizer.zero_grad()
                 outputs = model(x)
