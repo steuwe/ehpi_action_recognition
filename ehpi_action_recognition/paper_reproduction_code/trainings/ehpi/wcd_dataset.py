@@ -58,7 +58,7 @@ class MyDataset(Dataset):
         x[:,:,0] = x[:,:,0]/1280
         x[:,:,1] = x[:,:,1]/720
         x = np.transpose(x, (2, 0, 1))
-        x = torch.tensor(x)
+        x = torch.FloatTensor(x)
         return x, y
     
     def __len__(self):
